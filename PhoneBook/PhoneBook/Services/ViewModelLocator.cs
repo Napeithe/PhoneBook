@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using GalaSoft.MvvmLight.Ioc;
+using PhoneBook.Model;
 using PhoneBook.ViewModels;
 
 namespace PhoneBook.Services
@@ -11,19 +12,10 @@ namespace PhoneBook.Services
         public ViewModelLocator()
         {
             SimpleIoc.Default.Register<MainPageViewModel>();
+            SimpleIoc.Default.Register<IDataStore<Contact>>(() => new MockData());
         }
 
-        public MainPageViewModel MainPageViewModel
-        {
-            get
-            {
-                if (!SimpleIoc.Default.IsRegistered<MainPageViewModel>())
-                {
-                    SimpleIoc.Default.GetInstance<MainPageViewModel>();
-                }
+        public MainPageViewModel MainPageViewModel => SimpleIoc.Default.GetInstance<MainPageViewModel>();
 
-                return SimpleIoc.Default.GetInstance<MainPageViewModel>();
-            }
-        }
     }
 }

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:model="clr-namespace:PhoneBook.Model;assembly=PhoneBook"
              mc:Ignorable="d"
              x:Class="PhoneBook.MainPage">
     <ContentPage.ToolbarItems>
@@ -11,27 +12,44 @@
     <StackLayout>
         <ListView 
             x:Name="ContactList"
-            IsPullToRefreshEnabled="True"
-            CachingStrategy="RecycleElement">
+            ItemsSource="{Binding Contacts}"
+            VerticalOptions="FillAndExpand"
+            HasUnevenRows="true"
+            IsPullToRefreshEnabled="False"
+            CachingStrategy="RecycleElement" HeightRequest="-1">
+
             <d:ListView.ItemsSource>
-                <x:Array Type="{x:Type x:String}">
-                    <x:String>First Item</x:String>
-                    <x:String>Second Item</x:String>
-                    <x:String>Third Item</x:String>
-                    <x:String>Fourth Item</x:String>
-                    <x:String>Fifth Item</x:String>
-                    <x:String>Sixth Item</x:String>
+                <x:Array Type="{x:Type model:Contact}">
+                    <model:Contact FirstName="Jan" LastName="Kowalski" PhoneNumber="23232"/>
+                    <model:Contact FirstName="Jan" LastName="Kowalski" PhoneNumber="23232"/>
+                    <model:Contact FirstName="Jan" LastName="Kowalski" PhoneNumber="23232"/>
                 </x:Array>
             </d:ListView.ItemsSource>
             <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout Padding="10">
+                <DataTemplate x:DataType="model:Contact">
+                    <ViewCell >
+                        <StackLayout  Padding="10" HorizontalOptions="FillAndExpand" >
+                            <StackLayout 
+                                Orientation="Horizontal">
+                                <Label 
+                                    Text="{Binding FirstName}"
+                                    x:Text="{Binding .}"
+                                    LineBreakMode="NoWrap"
+                                    FontSize="16"></Label>
+                                <Label 
+                                    Text="{Binding LastName}"
+                                    x:Text="{Binding .}"
+                                    LineBreakMode="NoWrap"
+                                    FontSize="16"></Label>
+                            </StackLayout>
                             <Label 
-                                Text="{Binding .}"
+                                Text="{Binding PhoneNumber}"
+                                x:Text="{Binding .}"
                                 LineBreakMode="NoWrap"
-                                FontSize="16"></Label>
+                                FontSize="16">
+                            </Label>
                         </StackLayout>
+                      
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>

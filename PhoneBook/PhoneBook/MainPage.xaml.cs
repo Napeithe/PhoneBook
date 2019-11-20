@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PhoneBook.ViewModels;
 using Xamarin.Forms;
 
 namespace PhoneBook
@@ -13,10 +14,23 @@ namespace PhoneBook
     [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
     {
+        private MainPageViewModel _viewModel;
+
         public MainPage()
         {
             InitializeComponent();
-            BindingContext = App.ViewModelLocator.MainPageViewModel;
+            _viewModel = App.ViewModelLocator.MainPageViewModel;
+            BindingContext = _viewModel;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            if (!_viewModel.Contacts.Any())
+            {
+                _viewModel.LoadContactsCommand.Execute(null);
+            }
         }
 
         private void AddItem_Clicked(object sender, EventArgs e)
