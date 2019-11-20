@@ -9,8 +9,17 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Clicked="AddItem_Clicked" />
     </ContentPage.ToolbarItems>
-    <StackLayout>
-        <ListView 
+    <StackLayout FlowDirection="LeftToRight">
+        <RelativeLayout>
+            <Button Text="DODAj"
+                    RelativeLayout.XConstraint =
+                    "{ConstraintExpression Type=RelativeToParent,
+                             Property=Width,
+                             Factor=1,
+                             Constant=-100}"/>
+        </RelativeLayout>
+<StackLayout>
+            <ListView 
             x:Name="ContactList"
             ItemsSource="{Binding Contacts}"
             VerticalOptions="FillAndExpand"
@@ -18,42 +27,44 @@
             IsPullToRefreshEnabled="False"
             CachingStrategy="RecycleElement" HeightRequest="-1">
 
-            <d:ListView.ItemsSource>
-                <x:Array Type="{x:Type model:Contact}">
-                    <model:Contact FirstName="Jan" LastName="Kowalski" PhoneNumber="23232"/>
-                    <model:Contact FirstName="Jan" LastName="Kowalski" PhoneNumber="23232"/>
-                    <model:Contact FirstName="Jan" LastName="Kowalski" PhoneNumber="23232"/>
-                </x:Array>
-            </d:ListView.ItemsSource>
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="model:Contact">
-                    <ViewCell >
-                        <StackLayout  Padding="10" HorizontalOptions="FillAndExpand" >
-                            <StackLayout 
+                <d:ListView.ItemsSource>
+                    <x:Array Type="{x:Type model:Contact}">
+                        <model:Contact FirstName="Jan" LastName="Kowalski" PhoneNumber="23232"/>
+                        <model:Contact FirstName="Jan" LastName="Kowalski" PhoneNumber="23232"/>
+                        <model:Contact FirstName="Jan" LastName="Kowalski" PhoneNumber="23232"/>
+                    </x:Array>
+                </d:ListView.ItemsSource>
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Contact">
+                        <ViewCell >
+                            <StackLayout  Padding="10" HorizontalOptions="FillAndExpand" >
+                                <StackLayout 
                                 Orientation="Horizontal">
-                                <Label 
+                                    <Label 
                                     Text="{Binding FirstName}"
                                     x:Text="{Binding .}"
                                     LineBreakMode="NoWrap"
                                     FontSize="16"></Label>
-                                <Label 
+                                    <Label 
                                     Text="{Binding LastName}"
                                     x:Text="{Binding .}"
                                     LineBreakMode="NoWrap"
                                     FontSize="16"></Label>
-                            </StackLayout>
-                            <Label 
+                                </StackLayout>
+                                <Label 
                                 Text="{Binding PhoneNumber}"
                                 x:Text="{Binding .}"
                                 LineBreakMode="NoWrap"
                                 FontSize="16">
-                            </Label>
-                        </StackLayout>
-                      
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                                </Label>
+                            </StackLayout>
+
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+      
     </StackLayout>
 
 </ContentPage>
