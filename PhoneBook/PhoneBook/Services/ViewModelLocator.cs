@@ -12,10 +12,12 @@ namespace PhoneBook.Services
         public ViewModelLocator()
         {
             SimpleIoc.Default.Register<MainPageViewModel>();
+            SimpleIoc.Default.Register<AddNewItemViewModel>();
             SimpleIoc.Default.Register<IDataStore<Contact>>(() => new MockData());
         }
 
         public MainPageViewModel MainPageViewModel => SimpleIoc.Default.GetInstance<MainPageViewModel>();
+        public AddNewItemViewModel AddNewItemViewModel => SimpleIoc.Default.GetInstance<AddNewItemViewModel>();
 
     }
 }

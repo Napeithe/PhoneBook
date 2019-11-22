@@ -1,5 +1,6 @@
 ﻿using System;
 using PhoneBook.Services;
+using PhoneBook.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 

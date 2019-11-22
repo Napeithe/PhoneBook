@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using PhoneBook.Model;
 
@@ -23,7 +24,26 @@ namespace PhoneBook.Services
 
         public Task<List<Contact>> LoadDataAsync()
         {
-            return Task.FromResult(_contacts);
+            List<Contact> orderedContacts = _contacts.OrderBy(x=>x.FirstName).ThenBy(x=>x.LastName).ToList();
+            return Task.FromResult(orderedContacts);
+        }
+
+        public Task AddContactAsync(Contact contact)
+        {
+            contact.Id = Guid.NewGuid().ToString();
+            _contacts.Add(contact);
+
+            return Task.CompletedTask;
+        }
+
+        public Task EditContactAsync(Contact contact)
+        {
+            Contact modifiedContact = _contacts.First(x => x.Id == contact.Id);
+            modifiedContact.FirstName = contact.FirstName;
+            modifiedContact.LastName = contact.LastName;
+            modifiedContact.PhoneNumber = contact.PhoneNumber;
+
+            return Task.CompletedTask;
         }
     }
 }

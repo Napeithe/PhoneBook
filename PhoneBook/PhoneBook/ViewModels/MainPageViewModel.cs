@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using PhoneBook.Model;
 
 namespace PhoneBook.ViewModels
 {
+
     public class MainPageViewModel : BaseViewModel
     {
         private ObservableCollection<Contact> _contacts;
@@ -26,10 +25,19 @@ namespace PhoneBook.ViewModels
             }
         }
 
+        public RelayCommand AddNewContactCommand { get; set; }
+        public RelayCommand<int> EditContactCommand { get; set; }
+
         public MainPageViewModel()
         {
             Contacts = new ObservableCollection<Contact>();
             LoadContactsCommand = new RelayCommand(async () => await ExecuteLoadContactsCommand());
+        }
+
+        public void SetupNavigator(IMainPageNavigator navigator)
+        {
+            AddNewContactCommand = new RelayCommand(async () => await navigator.AddNewContactNavAsync());
+            EditContactCommand = new RelayCommand<int>(async (contactId) => await navigator.EditContactNavAsync(contactId));
         }
 
         private async Task ExecuteLoadContactsCommand()
@@ -42,5 +50,10 @@ namespace PhoneBook.ViewModels
             });
         }
 
+        public interface IMainPageNavigator
+        {
+            Task AddNewContactNavAsync();
+            Task EditContactNavAsync(int contactId);
+        }
     }
 }

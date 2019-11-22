@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:model="clr-namespace:PhoneBook.Model;assembly=PhoneBook"
              mc:Ignorable="d"
-             x:Class="PhoneBook.MainPage">
+             x:Class="PhoneBook.Views.MainPage">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Clicked="AddItem_Clicked" />
     </ContentPage.ToolbarItems>
