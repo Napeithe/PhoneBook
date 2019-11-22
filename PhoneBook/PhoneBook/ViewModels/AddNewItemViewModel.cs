@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using PhoneBook.Model;
-using PhoneBook.Views;
 
 namespace PhoneBook.ViewModels
 {
@@ -72,11 +68,13 @@ namespace PhoneBook.ViewModels
         public void SetupAction(IActionDelegate actionDelegate)
         {
             CancelCommand = new RelayCommand(execute: async () => await actionDelegate.CloseAsync());
+            RaisePropertyChanged(nameof(CancelCommand));
             SaveCommand = new RelayCommand(async () =>
             {
                 await AddNewItemAsync();
                 await actionDelegate.CloseAsync();;
             });
+            RaisePropertyChanged(nameof(SaveCommand));
         }
 
         private async Task AddNewItemAsync()
@@ -88,6 +86,8 @@ namespace PhoneBook.ViewModels
                 PhoneNumber = PhoneNumber
             };
             await ContactsStore.AddContactAsync(contact);
+
+            MessengerInstance.Send<Contact>(contact);
         }
     }
 }

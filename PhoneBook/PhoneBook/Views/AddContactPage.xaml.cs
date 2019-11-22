@@ -22,20 +22,9 @@ namespace PhoneBook.Views
             BindingContext = _viewModel;
         }
 
-
-        async void Save_Clicked(object sender, EventArgs e)
+        public async Task CloseAsync()
         {
-            await Navigation.PopModalAsync();
-        }
-
-        async void Cancel_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PopModalAsync();
-        }
-
-        public Task CloseAsync()
-        {
-            throw new NotImplementedException();
+            await Navigation.PopAsync(true);
         }
     }
 }

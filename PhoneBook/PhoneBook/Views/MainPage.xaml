@@ -7,17 +7,9 @@
              mc:Ignorable="d"
              x:Class="PhoneBook.Views.MainPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Clicked="AddItem_Clicked" />
+        <ToolbarItem Text="Add" Command="{Binding AddNewContactCommand}" />
     </ContentPage.ToolbarItems>
-    <StackLayout FlowDirection="LeftToRight">
-        <RelativeLayout>
-            <Button Text="DODAj"
-                    RelativeLayout.XConstraint =
-                    "{ConstraintExpression Type=RelativeToParent,
-                             Property=Width,
-                             Factor=1,
-                             Constant=-100}"/>
-        </RelativeLayout>
+
 <StackLayout>
             <ListView 
             x:Name="ContactList"
@@ -65,6 +57,5 @@
             </ListView>
         </StackLayout>
       
-    </StackLayout>
 
 </ContentPage>

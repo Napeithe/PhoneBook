@@ -33,11 +33,6 @@ namespace PhoneBook.Views
             }
         }
 
-        private void AddItem_Clicked(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task AddNewContactNavAsync()
         {
             await Navigation.PushAsync(new AddContactPage());
