@@ -9,7 +9,7 @@ namespace PhoneBook.Services
     public interface IDataStore<T>
     {
         Task<List<T>> LoadDataAsync();
-        Task AddContactAsync(Contact contact);
+        Task CreateOrUpdateContactAsync(Contact contact);
         Task EditContactAsync(Contact contact);
         Task<Contact> LoadDataAsync(string contactId);
         Task DeleteAsync(string id);

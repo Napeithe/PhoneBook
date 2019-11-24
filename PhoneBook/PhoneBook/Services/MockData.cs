@@ -28,10 +28,22 @@ namespace PhoneBook.Services
             return Task.FromResult(orderedContacts);
         }
 
-        public Task AddContactAsync(Contact contact)
+        public Task CreateOrUpdateContactAsync(Contact contact)
         {
-            contact.Id = Guid.NewGuid().ToString();
-            _contacts.Add(contact);
+            if (string.IsNullOrEmpty(contact.Id))
+            {
+                contact.Id = Guid.NewGuid().ToString();
+            }
+
+            Contact oldContact = _contacts.FirstOrDefault(x=>x.Id == contact.Id);
+            if (oldContact is null)
+            {
+                _contacts.Add(contact);
+            }
+            else
+            {
+                EditContactAsync(contact);
+            }
 
             return Task.CompletedTask;
         }

@@ -7,11 +7,12 @@ namespace PhoneBook.ViewModels
 {
     public class AddNewItemViewModel : BaseViewModel
     {
-
+        private string _id;
         private string _title;
         private string _firstName;
         private string _lastName;
         private string _phoneNumber;
+
 
         public string FirstName
         {
@@ -27,6 +28,7 @@ namespace PhoneBook.ViewModels
                 RaisePropertyChanged(nameof(FirstName));
             }
         }
+
         public string Title
         {
             get => _title;
@@ -41,6 +43,7 @@ namespace PhoneBook.ViewModels
                 RaisePropertyChanged(nameof(Title));
             }
         }
+
         public string LastName
         {
             get => _lastName;
@@ -71,9 +74,24 @@ namespace PhoneBook.ViewModels
             }
         }
 
+        public string Id
+        {
+            get => _id;
+            set
+            {
+                if (value == _id)
+                {
+                    return;
+                }
+
+                _id = value;
+                RaisePropertyChanged(nameof(Id));
+            }
+        }
 
         public RelayCommand CancelCommand { get; set; }
         public RelayCommand SaveCommand { get; set; }
+
 
         public interface IActionDelegate
         {
@@ -85,6 +103,25 @@ namespace PhoneBook.ViewModels
             Title = "Edycja";
 
             await SetContact(contactId);
+            SetCommands(actionDelegate);
+        }
+
+        public void AsNew(IActionDelegate actionDelegate)
+        {
+            SetCommands(actionDelegate);
+        }
+
+        private void SetCommands(IActionDelegate actionDelegate)
+        {
+            CancelCommand = new RelayCommand(execute: async () => await actionDelegate.CloseAsync());
+            RaisePropertyChanged(nameof(CancelCommand));
+            SaveCommand = new RelayCommand(async () =>
+            {
+                await CreateOrUpdate();
+                await actionDelegate.CloseAsync();
+                
+            });
+            RaisePropertyChanged(nameof(SaveCommand));
         }
 
         private async Task SetContact(string contactId)
@@ -96,20 +133,6 @@ namespace PhoneBook.ViewModels
             Id = contactId;
         }
 
-        public string Id { get; set; }
-
-        public void AsNew(IActionDelegate actionDelegate)
-        {
-            CancelCommand = new RelayCommand(execute: async () => await actionDelegate.CloseAsync());
-            RaisePropertyChanged(nameof(CancelCommand));
-            SaveCommand = new RelayCommand(async () =>
-            {
-                await CreateOrUpdate();
-                await actionDelegate.CloseAsync(); ;
-            });
-            RaisePropertyChanged(nameof(SaveCommand));
-        }
-
         private async Task CreateOrUpdate()
         {
             Contact contact = new Contact
@@ -119,7 +142,7 @@ namespace PhoneBook.ViewModels
                 PhoneNumber = PhoneNumber,
                 Id = Id
             };
-            await ContactsStore.AddContactAsync(contact);
+            await ContactsStore.CreateOrUpdateContactAsync(contact);
 
             MessengerInstance.Send<Contact>(contact);
         }
