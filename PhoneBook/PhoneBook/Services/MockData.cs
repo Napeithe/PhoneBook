@@ -45,5 +45,17 @@ namespace PhoneBook.Services
 
             return Task.CompletedTask;
         }
+
+        public Task<Contact> LoadDataAsync(string contactId)
+        {
+            return Task.FromResult(_contacts.First(x => x.Id == contactId));
+        }
+
+        public Task DeleteAsync(string id)
+        {
+            Contact contact = _contacts.First(x=>x.Id == id);
+            _contacts.Remove(contact);
+            return Task.CompletedTask;
+        }
     }
 }

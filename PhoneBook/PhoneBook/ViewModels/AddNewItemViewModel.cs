@@ -8,6 +8,7 @@ namespace PhoneBook.ViewModels
     public class AddNewItemViewModel : BaseViewModel
     {
 
+        private string _title;
         private string _firstName;
         private string _lastName;
         private string _phoneNumber;
@@ -24,6 +25,20 @@ namespace PhoneBook.ViewModels
 
                 _firstName = value;
                 RaisePropertyChanged(nameof(FirstName));
+            }
+        }
+        public string Title
+        {
+            get => _title;
+            set
+            {
+                if (value == _title)
+                {
+                    return;
+                }
+
+                _title = value;
+                RaisePropertyChanged(nameof(Title));
             }
         }
         public string LastName
@@ -65,25 +80,44 @@ namespace PhoneBook.ViewModels
             Task CloseAsync();
         }
 
-        public void SetupAction(IActionDelegate actionDelegate)
+        public async Task AsEdit(string contactId, IActionDelegate actionDelegate)
+        {
+            Title = "Edycja";
+
+            await SetContact(contactId);
+        }
+
+        private async Task SetContact(string contactId)
+        {
+            Contact loadDataAsync = await ContactsStore.LoadDataAsync(contactId);
+            FirstName = loadDataAsync.FirstName;
+            LastName = loadDataAsync.LastName;
+            PhoneNumber = loadDataAsync.PhoneNumber;
+            Id = contactId;
+        }
+
+        public string Id { get; set; }
+
+        public void AsNew(IActionDelegate actionDelegate)
         {
             CancelCommand = new RelayCommand(execute: async () => await actionDelegate.CloseAsync());
             RaisePropertyChanged(nameof(CancelCommand));
             SaveCommand = new RelayCommand(async () =>
             {
-                await AddNewItemAsync();
-                await actionDelegate.CloseAsync();;
+                await CreateOrUpdate();
+                await actionDelegate.CloseAsync(); ;
             });
             RaisePropertyChanged(nameof(SaveCommand));
         }
 
-        private async Task AddNewItemAsync()
+        private async Task CreateOrUpdate()
         {
             Contact contact = new Contact
             {
                 FirstName = FirstName,
                 LastName = LastName,
-                PhoneNumber = PhoneNumber
+                PhoneNumber = PhoneNumber,
+                Id = Id
             };
             await ContactsStore.AddContactAsync(contact);
 

@@ -18,8 +18,19 @@ namespace PhoneBook.Views
         {
             InitializeComponent();
             _viewModel = App.ViewModelLocator.AddNewItemViewModel;
-            _viewModel.SetupAction(this);
+         
             BindingContext = _viewModel;
+        }
+
+        public void AsNew()
+        {
+            _viewModel.AsNew(this);
+        }
+
+        public async Task AsEdit(string contactId)
+        {
+            await _viewModel.AsEdit(contactId, this);
+
         }
 
         public async Task CloseAsync()
