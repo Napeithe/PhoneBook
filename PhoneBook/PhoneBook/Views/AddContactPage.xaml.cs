@@ -25,11 +25,13 @@ namespace PhoneBook.Views
         public void AsNew()
         {
             _viewModel.AsNew(this);
+            _viewModel.ClearError();
         }
 
         public async Task AsEdit(string contactId)
         {
             await _viewModel.AsEdit(contactId, this);
+            _viewModel.ClearError();
 
         }
 

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 using PhoneBook.Model;
 
 namespace PhoneBook.ViewModels
@@ -15,20 +11,46 @@ namespace PhoneBook.ViewModels
         private string _firstName;
         private string _lastName;
         private string _phoneNumber;
+        private bool _firstNameShowError;
+        private bool _lastNameShowError;
+        private bool _phoneNumberShowError;
 
+           
 
-        public string FirstName
+        public bool IsValid => !string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName) &&
+            !string.IsNullOrEmpty(PhoneNumber);
+
+        public bool FirstNameShowError
         {
-            get => _firstName;
+            get => _firstNameShowError;
             set
             {
-                if (value == _firstName)
-                {
-                    return;
-                }
 
-                _firstName = value;
-                RaisePropertyChanged(nameof(FirstName));
+                _firstNameShowError = value;
+                RaisePropertyChanged(nameof(FirstNameShowError));
+                RaisePropertyChanged(nameof(IsValid));
+            }
+        }
+        public bool LastNameShowError
+        {
+            get => _lastNameShowError;
+            set
+            {
+
+                _lastNameShowError = value;
+                RaisePropertyChanged(nameof(LastNameShowError));
+                RaisePropertyChanged(nameof(IsValid));
+            }
+        }
+
+        public bool PhoneNumberShowError
+        {
+            get => _phoneNumberShowError;
+            set
+            {
+                _phoneNumberShowError = value;
+                RaisePropertyChanged(nameof(PhoneNumberShowError));
+                RaisePropertyChanged(nameof(IsValid));
             }
         }
 
@@ -37,6 +59,8 @@ namespace PhoneBook.ViewModels
             get => _title;
             set
             {
+
+            
                 if (value == _title)
                 {
                     return;
@@ -47,11 +71,28 @@ namespace PhoneBook.ViewModels
             }
         }
 
+        public string FirstName
+        {
+            get => _firstName;
+            set
+            {
+                FirstNameShowError = string.IsNullOrEmpty(value);
+                if (value == _firstName)
+                {
+                    return;
+                }
+
+                _firstName = value;
+                RaisePropertyChanged(nameof(FirstName));
+            }
+        }
+
         public string LastName
         {
             get => _lastName;
             set
             {
+                LastNameShowError = string.IsNullOrEmpty(value);
                 if (value == _lastName)
                 {
                     return;
@@ -67,6 +108,7 @@ namespace PhoneBook.ViewModels
             get => _phoneNumber;
             set
             {
+                PhoneNumberShowError = string.IsNullOrEmpty(value);
                 if (value == _phoneNumber)
                 {
                     return;
@@ -114,15 +156,30 @@ namespace PhoneBook.ViewModels
             SetCommands(actionDelegate);
         }
 
+        public void ClearError()
+        {
+            FirstNameShowError = false;
+            LastNameShowError = false;
+            PhoneNumberShowError = false;
+        }
+
         private void SetCommands(IActionDelegate actionDelegate)
         {
-            CancelCommand = new RelayCommand(execute: async () => await actionDelegate.CloseAsync());
+            CancelCommand = new RelayCommand(execute: async () =>
+            {
+                    Clear();
+                    await actionDelegate.CloseAsync();
+            });
             RaisePropertyChanged(nameof(CancelCommand));
             SaveCommand = new RelayCommand(async () =>
             {
-                await CreateOrUpdate();
-                await actionDelegate.CloseAsync();
-                
+                if (IsValid)
+                {
+                    await CreateOrUpdate();
+                    Clear();
+                    await actionDelegate.CloseAsync();
+                }
+
             });
             RaisePropertyChanged(nameof(SaveCommand));
         }
@@ -150,6 +207,13 @@ namespace PhoneBook.ViewModels
             MessengerInstance.Send<Contact>(contact);
         }
 
+        private void Clear()
+        {
+            FirstName = string.Empty;
+            LastName = string.Empty;
+            PhoneNumber = string.Empty;
 
+            ClearError();
+        }
     }
 }

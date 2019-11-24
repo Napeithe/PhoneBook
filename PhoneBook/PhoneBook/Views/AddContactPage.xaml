@@ -8,17 +8,17 @@
              x:Class="PhoneBook.Views.AddContactPage">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Cancel" Command="{Binding CancelCommand}" />
-        <ToolbarItem Text="Save" Command="{Binding SaveCommand}" />
+        <ToolbarItem Text="Save" Command="{Binding SaveCommand}"  IsEnabled="{Binding IsValid}" />
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
         <StackLayout Spacing="10" Padding="15">
-            <Label Text="Imię" FontSize="Medium" />
-            <Entry Text="{Binding FirstName}" d:Text="Jan" FontSize="Small" />
-            <Label Text="Nazwisko" FontSize="Medium" />
-            <Entry Text="{Binding LastName}" d:Text="Kowalski" FontSize="Small" Margin="0" />
-            <Label Text="Nr telefonu" FontSize="Medium" />
-            <Entry Text="{Binding PhoneNumber}" d:Text="123456789" Keyboard="Numeric" FontSize="Small" Margin="0" />
+            <Entry Text="{Binding FirstName}" Placeholder="Imię" FontSize="Small"/>
+            <Label TextColor="Red" FontSize="Micro" Text="To pole jest wymagane" IsVisible="{Binding FirstNameShowError}"></Label>
+            <Entry Text="{Binding LastName}"  Placeholder="Nazwisko" FontSize="Small" Margin="0" />
+            <Label TextColor="Red" FontSize="Micro" Text="To pole jest wymagane" IsVisible="{Binding LastNameShowError}"></Label>
+            <Entry Text="{Binding PhoneNumber}"  Placeholder="Numer telefonu" Keyboard="Numeric" FontSize="Small" Margin="0" />
+            <Label TextColor="Red" FontSize="Micro" Text="To pole jest wymagane" IsVisible="{Binding PhoneNumberShowError}"></Label>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
