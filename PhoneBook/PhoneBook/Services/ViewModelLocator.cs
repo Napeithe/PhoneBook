@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GalaSoft.MvvmLight.Ioc;
+﻿using GalaSoft.MvvmLight.Ioc;
+using PhoneBook.Entity;
 using PhoneBook.Model;
 using PhoneBook.ViewModels;
 
@@ -13,7 +11,7 @@ namespace PhoneBook.Services
         {
             SimpleIoc.Default.Register<MainPageViewModel>();
             SimpleIoc.Default.Register<AddNewItemViewModel>();
-            SimpleIoc.Default.Register<IDataStore<Contact>>(() => new MockData());
+            SimpleIoc.Default.Register<IDataStore<Contact>>(() => DatabaseInstance.Database);
         }
 
         public MainPageViewModel MainPageViewModel => SimpleIoc.Default.GetInstance<MainPageViewModel>();
