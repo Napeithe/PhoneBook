@@ -12,8 +12,8 @@ namespace PhoneBook.Entity
 {
     public class ContactStore : IDataStore<Contact>
     {
-        private SQLiteAsyncConnection _database;
-        private AsyncTableQuery<ContactEntity> _contactEntityTable;
+        private readonly SQLiteAsyncConnection _database;
+        private readonly AsyncTableQuery<ContactEntity> _contactEntityTable;
 
 
         public ContactStore(string dbPath)

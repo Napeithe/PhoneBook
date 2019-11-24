@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections;
+using System.ComponentModel;
+using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using PhoneBook.Model;
@@ -146,5 +149,7 @@ namespace PhoneBook.ViewModels
 
             MessengerInstance.Send<Contact>(contact);
         }
+
+
     }
 }

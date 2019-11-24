@@ -16,9 +16,9 @@
             <Label Text="Imię" FontSize="Medium" />
             <Entry Text="{Binding FirstName}" d:Text="Jan" FontSize="Small" />
             <Label Text="Nazwisko" FontSize="Medium" />
-            <Editor Text="{Binding LastName}" d:Text="Kowalski" FontSize="Small" Margin="0" />
+            <Entry Text="{Binding LastName}" d:Text="Kowalski" FontSize="Small" Margin="0" />
             <Label Text="Nr telefonu" FontSize="Medium" />
-            <Editor Text="{Binding PhoneNumber}" d:Text="123456789" FontSize="Small" Margin="0" />
+            <Entry Text="{Binding PhoneNumber}" d:Text="123456789" Keyboard="Numeric" FontSize="Small" Margin="0" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
