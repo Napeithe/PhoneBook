@@ -42,18 +42,8 @@ namespace PhoneBook.Services
             }
             else
             {
-                EditContactAsync(contact);
+                EditContactAsync(contact, oldContact);
             }
-
-            return Task.CompletedTask;
-        }
-
-        public Task EditContactAsync(Contact contact)
-        {
-            Contact modifiedContact = _contacts.First(x => x.Id == contact.Id);
-            modifiedContact.FirstName = contact.FirstName;
-            modifiedContact.LastName = contact.LastName;
-            modifiedContact.PhoneNumber = contact.PhoneNumber;
 
             return Task.CompletedTask;
         }
@@ -67,6 +57,15 @@ namespace PhoneBook.Services
         {
             Contact contact = _contacts.First(x=>x.Id == id);
             _contacts.Remove(contact);
+            return Task.CompletedTask;
+        }
+
+        private Task EditContactAsync(Contact contact, Contact oldContact)
+        {
+            oldContact.FirstName = contact.FirstName;
+            oldContact.LastName = contact.LastName;
+            oldContact.PhoneNumber = contact.PhoneNumber;
+
             return Task.CompletedTask;
         }
     }

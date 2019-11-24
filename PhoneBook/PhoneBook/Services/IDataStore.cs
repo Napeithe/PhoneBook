@@ -10,7 +10,6 @@ namespace PhoneBook.Services
     {
         Task<List<T>> LoadDataAsync();
         Task CreateOrUpdateContactAsync(Contact contact);
-        Task EditContactAsync(Contact contact);
         Task<Contact> LoadDataAsync(string contactId);
         Task DeleteAsync(string id);
     }
